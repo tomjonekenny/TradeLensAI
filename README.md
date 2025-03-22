@@ -50,7 +50,7 @@ Installation
 
 Clone the repository:
 
-git clone https://github.com/reapermunky/TradeLens.git
+git clone https://github.com/tomjonekenny/TradeLensAI.git
 
 Navigate to the project directory
 
