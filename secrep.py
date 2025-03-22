@@ -8,9 +8,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import logging
 
-# ----------------------
-#       SETUP
-# ----------------------
+
 st.set_page_config(page_title="AI Empowered Investment Toolkit", layout="wide")
 
 # Replace with your own OpenAI API key
@@ -26,9 +24,7 @@ This comprehensive tool retrieves live stock data, insider trading activity, key
 """
 )
 
-# ----------------------
-#   HELPER FUNCTIONS
-# ----------------------
+
 @st.cache_data(ttl=3600)
 def fetch_insider_trades(ticker: str) -> pd.DataFrame:
     """
@@ -140,9 +136,7 @@ def fetch_fundamentals(ticker: str) -> dict:
         logging.error(f"Error fetching fundamentals for {ticker}: {e}")
         return {}
 
-# ----------------------
-#     MAIN APP FLOW
-# ----------------------
+
 ticker = st.text_input("Enter Stock Ticker (e.g., AAPL, TSLA, MSFT):", "").upper()
 
 if ticker:
@@ -153,9 +147,7 @@ if ticker:
         insider_trades = fetch_insider_trades(ticker)
         news = fetch_latest_news(ticker, max_news=5)
 
-        # ----------------------
-        #   PRICE CHART
-        # ----------------------
+        
         if not stock_data.empty:
             st.subheader("📈 Stock Price & Volume Trend")
 
@@ -172,9 +164,7 @@ if ticker:
         else:
             st.warning(f"Could not fetch stock data for '{ticker}'.")
 
-        # ----------------------
-        #   FUNDAMENTALS
-        # ----------------------
+        
         if fundamentals:
             st.subheader("🏦 Key Fundamentals")
             fundamentals_df = pd.DataFrame(
@@ -198,15 +188,11 @@ if ticker:
         else:
             st.warning("Could not retrieve fundamentals for this ticker.")
 
-        # ----------------------
-        #   LATEST NEWS
-        # ----------------------
+        
         st.subheader("📰 Latest Financial News")
         st.write(news)
 
-        # ----------------------
-        #   SENTIMENT ANALYSIS
-        # ----------------------
+        
         if news and "Error" not in news:
             prompt_sentiment = (
                 f"Analyze the following news articles about {ticker} and provide a sentiment "
@@ -220,9 +206,7 @@ if ticker:
         else:
             st.warning("No valid news available to analyze sentiment.")
 
-        # ----------------------
-        #   VALUATION ANALYSIS
-        # ----------------------
+        
         st.subheader("💡 Optional: GPT Valuation Analysis")
         st.markdown("*(This is an experimental feature. It may take a few seconds.)*")
         if st.button("Run Valuation Analysis"):
@@ -235,18 +219,14 @@ if ticker:
             valuation_analysis = generate_analysis_via_gpt(prompt_valuation)
             st.write(valuation_analysis)
 
-        # ----------------------
-        #   INSIDER TRADING
-        # ----------------------
+        
         st.subheader("🏛️ Insider Trading Activity")
         if not insider_trades.empty:
             st.dataframe(insider_trades)
         else:
             st.info("No recent insider trading activity found.")
 
-        # ----------------------
-        #   RISK FACTORS
-        # ----------------------
+        
         st.subheader("⚠️ Optional: GPT Risk Factors")
         st.markdown("*(This is an experimental feature. It may take a few seconds.)*")
         if st.button("Analyze Risk Factors"):
@@ -258,9 +238,7 @@ if ticker:
             risk_factors = generate_analysis_via_gpt(prompt_risks)
             st.write(risk_factors)
 
-        # ----------------------
-        #   GENERATE TXT REPORT
-        # ----------------------
+        
         if st.button("📄 Generate TXT Report"):
             try:
                 file_name = f"{ticker}_investment_report.txt"
